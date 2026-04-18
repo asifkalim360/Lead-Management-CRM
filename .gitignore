@@ -1,0 +1,72 @@
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### Eclipse / STS files ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+
+
+# Compiled class files
+*.class
+
+# Log files
+*.log
+logs/
+*.out
+
+# Maven target folder
+target/
+
+# Maven wrapper jar (optional keep if sharing project setup)
+!.mvn/wrapper/maven-wrapper.jar
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Application secrets / env files
+.env
+.env.*
+application-local.properties
+application-dev.properties
+
+# Temporary files
+*.tmp
+*.swp
+
+# Test reports
+surefire-reports/
+
+#### IntelliJ IDEA ###
+#.idea
+#*.iws
+#*.iml
+#*.ipr
+#
+#### NetBeans ###
+#/nbproject/private/
+#/nbbuild/
+#/dist/
+#/nbdist/
+#/.nb-gradle/
+#build/
+#!**/src/main/**/build/
+#!**/src/test/**/build/
+#
+#### VS Code ###
+#.vscode/
+
+## IntelliJ (agar future me use karo)
+#.idea/
+#*.iml
+#
+## VS Code
+#.vscode/
