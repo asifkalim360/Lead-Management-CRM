@@ -46,11 +46,11 @@ application-dev.properties
 surefire-reports/
 
 #### IntelliJ IDEA ###
-#.idea
-#*.iws
-#*.iml
-#*.ipr
-#
+.idea
+*.iws
+*.iml
+*.ipr
+
 #### NetBeans ###
 #/nbproject/private/
 #/nbbuild/
@@ -65,8 +65,8 @@ surefire-reports/
 #.vscode/
 
 ## IntelliJ (agar future me use karo)
-#.idea/
-#*.iml
-#
+.idea/
+*.iml
+
 ## VS Code
 #.vscode/
