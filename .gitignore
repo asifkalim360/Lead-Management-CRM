@@ -1,72 +1,156 @@
-HELP.md
-target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+  #   Important samajh le (Roman Hindi me)
+  #     .idea/ → IntelliJ ka local config hota hai (team ke liye useless)
+  #     target/ / build/ → compiled files (Git me nahi daalte)
+  #     .env → sensitive data (password, DB URL, API keys)
+  #     node_modules/ → huge size, kabhi push nahi karna
 
-### Eclipse / STS files ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings/
-.springBeans
-.sts4-cache
+# =========================
+# IntelliJ IDEA
+# =========================
 
-
-# Compiled class files
-*.class
-
-# Log files
-*.log
-logs/
-*.out
-
-# Maven target folder
-target/
-
-# Maven wrapper jar (optional keep if sharing project setup)
-!.mvn/wrapper/maven-wrapper.jar
-
-# OS generated files
-.DS_Store
-Thumbs.db
-
-# Application secrets / env files
-.env
-.env.*
-application-local.properties
-application-dev.properties
-
-# Temporary files
-*.tmp
-*.swp
-
-# Test reports
-surefire-reports/
-
-#### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
 
-#### NetBeans ###
-#/nbproject/private/
-#/nbbuild/
-#/dist/
-#/nbdist/
-#/.nb-gradle/
-#build/
-#!**/src/main/**/build/
-#!**/src/test/**/build/
-#
-#### VS Code ###
-#.vscode/
+# User-specific files
 
-## IntelliJ (agar future me use karo)
-.idea/
-*.iml
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/libraries
 
-## VS Code
-#.vscode/
+# IntelliJ build files
+
+out/
+
+# =========================
+
+# Java / Maven / Gradle
+
+# =========================
+
+# Compiled class file
+
+*.class
+
+# Log files
+
+*.log
+
+# BlueJ files
+
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+
+.mtj.tmp/
+
+# Package Files
+
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# JVM crash logs
+
+hs_err_pid*
+replay_pid*
+
+# =========================
+
+# Maven
+
+# =========================
+
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# =========================
+
+# Gradle
+
+# =========================
+
+.gradle/
+build/
+
+# =========================
+
+# Spring Boot
+
+# =========================
+
+logs/
+*.log
+
+# =========================
+
+# OS Files
+
+# =========================
+
+# Windows
+
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Mac
+
+.DS_Store
+
+# Linux
+
+*~
+
+# =========================
+
+# Environment Files
+
+# =========================
+
+.env
+.env.*
+
+# =========================
+
+# VS Code (optional)
+
+# =========================
+
+.vscode/
+
+# =========================
+
+# Node (if frontend inside project)
+
+# =========================
+
+node_modules/
+
+# =========================
+
+# Test / Coverage
+
+# =========================
+
+coverage/
+*.lcov
+
+# =========================
+
+# Misc
+
+# =========================
+
+*.tmp
+*.swp
