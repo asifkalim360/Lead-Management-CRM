@@ -21,7 +21,7 @@ public class LeadMapper {
     }
 
     // ENTITY TO DTO CONVERTION
-    public static LeadResponseDto todTO(Lead lead)
+    public static LeadResponseDto toDto(Lead lead)
     {
         LeadResponseDto dto = new LeadResponseDto();
         dto.setId(lead.getId());
