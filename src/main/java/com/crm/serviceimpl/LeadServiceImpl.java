@@ -57,4 +57,13 @@ public class LeadServiceImpl implements LeadService {
         Lead updatedLead = leadRepository.save(existingLead);
         return LeadMapper.toDto(updatedLead);
     }
+
+    @Override
+    public void deleteLead(Long id) {
+        if(leadRepository.existsById(id))
+        {
+            throw new RuntimeException("Lead not found");
+        }
+        leadRepository.deleteById(id);
+    }
 }

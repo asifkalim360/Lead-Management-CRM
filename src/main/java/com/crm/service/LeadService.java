@@ -8,12 +8,14 @@ import java.util.List;
 
 public interface LeadService {
 
-    LeadResponseDto createLead(LeadRequestDto requestDto);
+    public LeadResponseDto createLead(LeadRequestDto requestDto);
 
-    List<LeadResponseDto> getAllLeads();
+    public List<LeadResponseDto> getAllLeads();
 
-    LeadResponseDto getLeadById(Long id);
+    public LeadResponseDto getLeadById(Long id);
 
-    LeadResponseDto updateLead(Long id, LeadRequestDto requestDto);
+    public LeadResponseDto updateLead(Long id, LeadRequestDto requestDto);
+
+    public void deleteLead(Long id);
 
 }
