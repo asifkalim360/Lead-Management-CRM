@@ -24,6 +24,12 @@ public class LeadServiceImpl implements LeadService {
 
     @Override
     public LeadResponseDto createLead(LeadRequestDto requestDto) {
+
+        // 🔥 Duplicate email check
+        if (leadRepository.existsByEmail(requestDto.getEmail()))
+        {
+            throw new RuntimeException("Email already exists");
+        }
         Lead lead = LeadMapper.toEntity(requestDto);
         Lead savedLead = leadRepository.save(lead);
         return LeadMapper.toDto(savedLead);
@@ -61,7 +67,7 @@ public class LeadServiceImpl implements LeadService {
 
     @Override
     public void deleteLead(Long id) {
-        if(leadRepository.existsById(id))
+        if(!leadRepository.existsById(id))
         {
             throw new RuntimeException("Lead not found");
         }

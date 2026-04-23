@@ -8,4 +8,6 @@ import com.crm.entity.Lead;
 @Repository
 public interface LeadRepository extends JpaRepository<Lead, Long> {
 
+    public boolean existsByEmail(String email);
+
 }
