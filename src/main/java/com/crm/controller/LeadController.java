@@ -1,6 +1,7 @@
 package com.crm.controller;
 
 
+import com.crm.dto.ApiResponse;
 import com.crm.dto.LeadRequestDto;
 import com.crm.dto.LeadResponseDto;
 import com.crm.service.LeadService;
@@ -20,9 +21,13 @@ public class LeadController {
     }
 
     @PostMapping
-    public LeadResponseDto createLead(@Valid @RequestBody LeadRequestDto requestDto)
+    public ApiResponse<LeadResponseDto> createLead(@Valid @RequestBody LeadRequestDto requestDto)
     {
-        return leadService.createLead(requestDto);
+        return ApiResponse.<LeadResponseDto>builder()
+                .success(true)
+                .message("Lead Created Successfully")
+                .data(leadService.createLead(requestDto))
+                .build();
     }
 
     @GetMapping
@@ -54,4 +59,5 @@ public class LeadController {
     public List<LeadResponseDto> getByStatus(@PathVariable String status) {
         return leadService.getLeadsByStatus(status);
     }
+
 }
