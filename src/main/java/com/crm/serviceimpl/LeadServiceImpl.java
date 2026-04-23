@@ -42,4 +42,19 @@ public class LeadServiceImpl implements LeadService {
                 .orElseThrow(() -> new RuntimeException("Lead not Found"));
         return LeadMapper.toDto(lead);
     }
+
+    @Override
+    public LeadResponseDto updateLead(Long id, LeadRequestDto requestDto) {
+        Lead existingLead = leadRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Lead not found"));
+
+        existingLead.setFullName(requestDto.getFullName());
+        existingLead.setEmail(requestDto.getEmail());
+        existingLead.setPhone(requestDto.getPhone());
+        existingLead.setSource(requestDto.getSource());
+        existingLead.setAssignedTo(requestDto.getAssignedTo());
+
+        Lead updatedLead = leadRepository.save(existingLead);
+        return LeadMapper.toDto(updatedLead);
+    }
 }

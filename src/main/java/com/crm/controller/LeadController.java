@@ -36,4 +36,10 @@ public class LeadController {
     {
         return leadService.getLeadById(id);
     }
+
+    @PutMapping("/{id}")
+    public LeadResponseDto updateLead(@PathVariable Long id, @RequestBody LeadRequestDto requestDto)
+    {
+        return leadService.updateLead(id, requestDto);
+    }
 }
