@@ -3,6 +3,7 @@ package com.crm.serviceimpl;
 import com.crm.dto.LeadRequestDto;
 import com.crm.dto.LeadResponseDto;
 import com.crm.entity.Lead;
+import com.crm.enums.LeadStatus;
 import com.crm.exception.ResourceNotFoundException;
 import com.crm.mapper.LeadMapper;
 import com.crm.repository.LeadRepository;
@@ -72,5 +73,14 @@ public class LeadServiceImpl implements LeadService {
             throw new RuntimeException("Lead not found");
         }
         leadRepository.deleteById(id);
+    }
+
+    @Override
+    public List<LeadResponseDto> getLeadsByStatus(String status) {
+        LeadStatus leadStatus = LeadStatus.valueOf(status.toUpperCase());
+        return leadRepository.findByStatus(leadStatus)
+                .stream()
+                .map(LeadMapper::toDto)
+                .toList();
     }
 }
