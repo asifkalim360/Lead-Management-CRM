@@ -3,6 +3,7 @@ package com.crm.serviceimpl;
 import com.crm.dto.LeadRequestDto;
 import com.crm.dto.LeadResponseDto;
 import com.crm.entity.Lead;
+import com.crm.exception.ResourceNotFoundException;
 import com.crm.mapper.LeadMapper;
 import com.crm.repository.LeadRepository;
 import com.crm.service.LeadService;
@@ -39,14 +40,14 @@ public class LeadServiceImpl implements LeadService {
     @Override
     public LeadResponseDto getLeadById(Long id) {
         Lead lead = leadRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Lead not Found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Lead not found with id " + id));
         return LeadMapper.toDto(lead);
     }
 
     @Override
     public LeadResponseDto updateLead(Long id, LeadRequestDto requestDto) {
         Lead existingLead = leadRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Lead not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Lead not found with id " + id));
 
         existingLead.setFullName(requestDto.getFullName());
         existingLead.setEmail(requestDto.getEmail());
