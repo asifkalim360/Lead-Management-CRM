@@ -14,4 +14,5 @@ public interface LeadService {
 
     LeadResponseDto getLeadById(Long id);
 
+
 }

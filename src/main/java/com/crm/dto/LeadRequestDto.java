@@ -9,7 +9,7 @@ import lombok.Data;
 public class LeadRequestDto {
 	
 	@NotBlank
-	private String fullName; 
+	private String fullName;
 	
 	@Email
 	private String email; 
@@ -20,5 +20,9 @@ public class LeadRequestDto {
 	private String source; 
 	
 	private String assignedTo;
+
+    public String getFullName() {
+        return fullName;
+    }
 	
 }

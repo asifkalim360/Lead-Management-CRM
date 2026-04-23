@@ -30,6 +30,5 @@ public class Lead {
 	private LeadStatus status; 
 	
 	private String assignedTo; 
-	
-	
+
 }
