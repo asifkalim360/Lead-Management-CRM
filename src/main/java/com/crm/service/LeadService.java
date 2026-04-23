@@ -18,4 +18,6 @@ public interface LeadService {
 
     public void deleteLead(Long id);
 
+    public List<LeadResponseDto> getLeadsByStatus(String status);
+
 }

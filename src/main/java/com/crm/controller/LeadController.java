@@ -49,4 +49,9 @@ public class LeadController {
         leadService.deleteLead(id);
         return "Lead deleted Successfully";
     }
+
+    @GetMapping("/status/{status}")
+    public List<LeadResponseDto> getByStatus(@PathVariable String status) {
+        return leadService.getLeadsByStatus(status);
+    }
 }
