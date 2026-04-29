@@ -1,5 +1,7 @@
 package com.crm.entity;
 
+import com.crm.enums.TicketPriority;
+import com.crm.enums.TicketStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,10 +23,10 @@ public class Ticket {
     private String title;
     private String description;
 
- //    @Enumerated(EnumType.STRING)
-    private String status;      // OPEN, IN_PROGRESS, CLOSED.
- //    @Enumerated(EnumType.STRING)
-    private String priority;    // LOW, MEDIUM, HIGH.
+    @Enumerated(EnumType.STRING)
+    private TicketStatus status;      // OPEN, IN_PROGRESS, CLOSED.
+    @Enumerated(EnumType.STRING)
+    private TicketPriority priority;    // LOW, MEDIUM, HIGH.
 
  //    private LocalDateTime createdAt;
  //    private LocalDateTime updatedAt;
