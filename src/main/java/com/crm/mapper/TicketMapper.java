@@ -26,6 +26,12 @@ public class TicketMapper {
         dto.setStatus(ticket.getStatus().name());
         dto.setPriority(ticket.getPriority().name());
         dto.setLeadId(ticket.getLead().getId());
+
+        if(ticket.getAssignedUser() != null)
+        {
+            dto.setAssignedUserId(ticket.getAssignedUser().getId());
+            dto.setAssignedUserName(ticket.getAssignedUser().getName());
+        }
         return dto;
     }
 

@@ -4,12 +4,14 @@ import com.crm.dto.TicketRequestDTO;
 import com.crm.dto.TicketResponseDTO;
 import com.crm.entity.Lead;
 import com.crm.entity.Ticket;
+import com.crm.entity.User;
 import com.crm.enums.TicketPriority;
 import com.crm.enums.TicketStatus;
 import com.crm.exception.ResourceNotFoundException;
 import com.crm.mapper.TicketMapper;
 import com.crm.repository.LeadRepository;
 import com.crm.repository.TicketRepository;
+import com.crm.repository.UserRepository;
 import com.crm.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ public class TicketServiceImpl implements TicketService {   // Ye class TicketSe
     private final LeadRepository leadRepository;        // leadRepository → Lead ko DB se lane ke liye
     private final TicketRepository ticketRepository;    // ticketRepository → Ticket ko DB me save/fetch karne ke liye
     private final TicketMapper mapper;                  // mapper → DTO ↔ Entity conversion ke liye
+    private final UserRepository userRepository;
 
     @Override
     public TicketResponseDTO createTicket(TicketRequestDTO dto) {
@@ -45,6 +48,14 @@ public class TicketServiceImpl implements TicketService {   // Ye class TicketSe
 
         // Jab ticket create hota hai → default status OPEN rahega.
         ticket.setStatus(TicketStatus.OPEN);
+
+        // Assign User Logic
+        if (dto.getAssignedUserId() != null) {
+            User user = userRepository.findById(dto.getAssignedUserId())
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+            ticket.setAssignedUser(user);
+        }
 
         // (ticketRepository.save(ticket)) -> yahan pe Ticket ko database me save kar diya matlab JPA internally: INSERT query ko run karega -> aur ID generate karega.
         // Save ke baad: Entity ko DTO me convert kiya -> jisse Client ko clean response mil gaya.
@@ -81,6 +92,13 @@ public class TicketServiceImpl implements TicketService {   // Ye class TicketSe
         ticket.setTitle(dto.getTitle());
         ticket.setDescription(dto.getDescription());
         ticket.setPriority(dto.getPriority());
+
+        // Assign / Reassign User
+        if (dto.getAssignedUserId() != null) {
+            User user = userRepository.findById(dto.getAssignedUserId())
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+            ticket.setAssignedUser(user);
+        }
 
         return mapper.toDto(ticketRepository.save(ticket));
     }

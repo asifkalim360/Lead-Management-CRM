@@ -10,5 +10,7 @@ public class TicketResponseDTO {
     private String description;
     private String status;
     private String priority;
-    private Long leadId;
+    private Long leadId;                 //Lead entiry
+    private Long assignedUserId;        // User entity
+    private String assignedUserName;    // User entity
 }

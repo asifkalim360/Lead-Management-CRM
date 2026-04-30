@@ -39,12 +39,10 @@ public class Ticket {
     @JsonBackReference
     private Lead lead;
 
-
-
-
- //    @ManyToOne
- //    @JoinColumn(name = "assigned_to")
- //    private User user;
+     // Ek user → multiple tickets || Ek ticket → ek assigned user
+     @ManyToOne
+     @JoinColumn(name = "assigned_user_id")
+     private User assignedUser;
 
 }
 

@@ -14,4 +14,6 @@ public class TicketRequestDTO {
 
     private TicketPriority priority;
 
+    private Long assignedUserId;
+
 }
