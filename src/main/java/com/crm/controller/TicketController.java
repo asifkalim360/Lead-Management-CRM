@@ -1,0 +1,52 @@
+package com.crm.controller;
+
+import com.crm.dto.TicketRequestDTO;
+import com.crm.dto.TicketResponseDTO;
+import com.crm.enums.TicketPriority;
+import com.crm.enums.TicketStatus;
+import com.crm.service.TicketService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/tickets")
+@RequiredArgsConstructor
+public class TicketController {
+
+    private final TicketService ticketService;
+
+    @PostMapping
+    public ResponseEntity<?> createTicket(@Valid @RequestBody TicketRequestDTO dto)
+    {
+        return ResponseEntity.ok(ticketService.createTicket(dto));
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllTicket()
+    {
+        return ResponseEntity.ok(ticketService.getAllTicket());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getTicketById(@PathVariable Long id)
+    {
+        return ResponseEntity.ok(ticketService.getTicketById(id));
+    }
+
+    @GetMapping("/status/{status}")
+    public ResponseEntity<?> getByStatus(TicketStatus status)
+    {
+        return ResponseEntity.ok(ticketService.getByStatus(status));
+    }
+
+    @GetMapping("/priority/{priority}")
+    public ResponseEntity<?> getByPriority(TicketPriority priority)
+    {
+        return ResponseEntity.ok(ticketService.getByPriority(priority));
+    }
+
+}
