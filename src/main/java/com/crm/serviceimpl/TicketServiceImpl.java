@@ -75,6 +75,23 @@ public class TicketServiceImpl implements TicketService {   // Ye class TicketSe
     }
 
     @Override
+    public TicketResponseDTO updateTicket(Long id, TicketRequestDTO dto) {
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Ticket Not Found"));
+
+        ticket.setTitle(dto.getTitle());
+        ticket.setDescription(dto.getDescription());
+        ticket.setPriority(dto.getPriority());
+
+        return mapper.toDto(ticketRepository.save(ticket));
+    }
+
+    @Override
+    public void deleteTicket(Long id) {
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Ticket Not Found"));
+        ticketRepository.delete(ticket);
+    }
+
+    @Override
     public List<TicketResponseDTO> getByStatus(TicketStatus status) {
         return ticketRepository.findByStatus(status)
                 .stream()

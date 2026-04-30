@@ -15,6 +15,10 @@ public interface TicketService {
 
     public TicketResponseDTO getTicketById(Long id);
 
+    public TicketResponseDTO updateTicket(Long id, TicketRequestDTO dto);
+
+    public void deleteTicket(Long id);
+
     public List<TicketResponseDTO> getByStatus(TicketStatus status);
 
     public List<TicketResponseDTO> getByPriority(TicketPriority priority);

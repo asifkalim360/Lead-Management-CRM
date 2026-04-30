@@ -37,6 +37,17 @@ public class TicketController {
         return ResponseEntity.ok(ticketService.getTicketById(id));
     }
 
+    public ResponseEntity<?> updateTicket(@PathVariable Long id, @RequestBody TicketRequestDTO dto)
+    {
+        return ResponseEntity.ok(ticketService.updateTicket(id, dto));
+    }
+
+    public ResponseEntity<?> deleteTicket(@PathVariable Long id)
+    {
+        ticketService.deleteTicket(id);
+        return ResponseEntity.ok("Ticket deleted Successfully");
+    }
+
     @GetMapping("/status/{status}")
     public ResponseEntity<?> getByStatus(TicketStatus status)
     {
