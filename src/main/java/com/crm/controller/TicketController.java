@@ -37,11 +37,12 @@ public class TicketController {
         return ResponseEntity.ok(ticketService.getTicketById(id));
     }
 
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateTicket(@PathVariable Long id, @RequestBody TicketRequestDTO dto)
     {
         return ResponseEntity.ok(ticketService.updateTicket(id, dto));
     }
-
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTicket(@PathVariable Long id)
     {
         ticketService.deleteTicket(id);
