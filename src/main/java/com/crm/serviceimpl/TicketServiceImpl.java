@@ -12,6 +12,7 @@ import com.crm.mapper.TicketMapper;
 import com.crm.repository.LeadRepository;
 import com.crm.repository.TicketRepository;
 import com.crm.repository.UserRepository;
+import com.crm.service.AuditService;
 import com.crm.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ public class TicketServiceImpl implements TicketService {   // Ye class TicketSe
     private final TicketRepository ticketRepository;    // ticketRepository → Ticket ko DB me save/fetch karne ke liye
     private final TicketMapper mapper;                  // mapper → DTO ↔ Entity conversion ke liye
     private final UserRepository userRepository;
+    private final AuditService auditService;
 
     @Override
     public TicketResponseDTO createTicket(TicketRequestDTO dto) {
@@ -58,9 +60,21 @@ public class TicketServiceImpl implements TicketService {   // Ye class TicketSe
         }
 
         // (ticketRepository.save(ticket)) -> yahan pe Ticket ko database me save kar diya matlab JPA internally: INSERT query ko run karega -> aur ID generate karega.
+
+        Ticket saved = ticketRepository.save(ticket);
+
+        auditService.log(
+                "CREATE",
+                "Ticket",
+                saved.getId(),
+                "SYSTEM",
+                null,
+                saved.toString()
+        );
+
         // Save ke baad: Entity ko DTO me convert kiya -> jisse Client ko clean response mil gaya.
         // Important: Kabhi bhi direct Entity return nahi karte chahye → Security + clean API design
-        return mapper.toDto(ticketRepository.save(ticket));
+        return mapper.toDto(saved);
     }
 
     @Override
@@ -89,6 +103,8 @@ public class TicketServiceImpl implements TicketService {   // Ye class TicketSe
     public TicketResponseDTO updateTicket(Long id, TicketRequestDTO dto) {
         Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Ticket Not Found"));
 
+        String oldValue = ticket.toString();
+
         ticket.setTitle(dto.getTitle());
         ticket.setDescription(dto.getDescription());
         ticket.setPriority(dto.getPriority());
@@ -100,13 +116,33 @@ public class TicketServiceImpl implements TicketService {   // Ye class TicketSe
             ticket.setAssignedUser(user);
         }
 
-        return mapper.toDto(ticketRepository.save(ticket));
+        Ticket updated = ticketRepository.save(ticket);
+
+        auditService.log(
+                "UPDATE",
+                "Ticket",
+                updated.getId(),
+                "SYSTEM",
+                oldValue,
+                updated.toString()
+        );
+
+        return mapper.toDto(updated);
     }
 
     @Override
     public void deleteTicket(Long id) {
         Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Ticket Not Found"));
+        String oldValue = ticket.toString();
         ticketRepository.delete(ticket);
+        auditService.log(
+                "DELETE",
+                "Ticket",
+                id,
+                "SYSTEM",
+                oldValue,
+                null
+        );
     }
 
     @Override
