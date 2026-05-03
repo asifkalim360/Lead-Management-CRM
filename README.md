@@ -1,21 +1,19 @@
-# 📌 CRM Backend Service (Lead Management):
+# 📌 CRM Backend Service (Lead + Ticket Management)
 
 ---
 
 ## 🚀 Project Overview
 
-This project is an **industry-style CRM backend system** built using **Spring Boot** with layered architecture.
+This project is an **industry-style CRM backend system** built using **Spring Boot** following a layered architecture.
 
-Current implementation:
+It covers:
 
-* Lead Management Module
-* Full CRUD APIs
-* Validation
-* Exception Handling
-* Swagger API Documentation
-* MySQL Integration
-* DTO + Mapper Pattern
-* Standard API Response Structure
+* Lead Management
+* Ticket Management
+* User Assignment
+* Audit Logging (with JSON support)
+* Pagination & Sorting
+* Advanced JPA Queries
 
 ---
 
@@ -27,12 +25,11 @@ Project follows **Layered Architecture**:
 Controller → Service → Repository → Database
 ```
 
-### Why this approach?
+### ✅ Benefits
 
 * Clean separation of concerns
-* Easy maintenance
 * Scalable design
-* Testable code
+* Easy testing & maintenance
 
 ---
 
@@ -44,13 +41,13 @@ com.crm
 ├── controller       → REST APIs
 ├── service          → Interfaces
 ├── serviceimpl      → Business logic
-├── repository       → Database layer (JPA)
-├── entity           → Database models
+├── repository       → JPA Repositories
+├── entity           → Database entities
 ├── dto              → Request/Response objects
 ├── mapper           → DTO ↔ Entity conversion
-├── exception        → Custom & global exceptions
-├── config           → Swagger & configs
-├── enums            → Status enums
+├── exception        → Custom exceptions
+├── config           → Configurations (Swagger, ObjectMapper)
+├── enums            → Enums (Status, Priority)
 ```
 
 ---
@@ -63,6 +60,7 @@ com.crm
 * MySQL
 * Lombok
 * Swagger (OpenAPI)
+* Jackson (JSON processing)
 
 ---
 
@@ -112,11 +110,25 @@ http://localhost:8080/swagger-ui/index.html
 
 ---
 
-## 📌 Lead Module
+# 📌 MODULES
 
 ---
 
-### 🔹 Entity Fields
+## 🚀 Day 1–3: Lead Management
+
+---
+
+### Features
+
+* Lead CRUD APIs
+* Validation (`@NotBlank`, `@Email`)
+* Exception Handling
+* DTO + Mapper pattern
+* Standard API Response
+
+---
+
+### Lead Fields
 
 * id
 * fullName
@@ -128,193 +140,269 @@ http://localhost:8080/swagger-ui/index.html
 
 ---
 
-### 🔹 Enum (LeadStatus)
+### LeadStatus Enum
 
 ```
-NEW
-CONTACTED
-QUALIFIED
-LOST
-CONVERTED
+NEW, CONTACTED, QUALIFIED, LOST, CONVERTED
 ```
 
 ---
 
-## 📥 APIs
+### APIs
+
+* POST `/api/leads`
+* GET `/api/leads`
+* GET `/api/leads/{id}`
+* PUT `/api/leads/{id}`
+* DELETE `/api/leads/{id}`
+* GET `/api/leads/status/{status}`
 
 ---
 
-### ✅ 1. Create Lead
+---
 
-**POST** `/api/leads`
+## 🚀 Day 4: Ticket Module & Relationships
 
-```json
-{
-  "fullName": "Asif",
-  "email": "asif@gmail.com",
-  "phone": "9876543210",
-  "source": "Website",
-  "assignedTo": "Sales Team A"
-}
+---
+
+### Features
+
+* Ticket CRUD APIs
+* Lead → Ticket relationship (OneToMany)
+* User Assignment (Assign/Reassign)
+* Filtering by Status & Priority
+
+---
+
+### Entity Relationships
+
+```
+Lead (1) ---------> (Many) Ticket
+User (1) ---------> (Many) Ticket
 ```
 
 ---
 
-### ✅ 2. Get All Leads
+### Ticket Fields
 
-**GET** `/api/leads`
-
----
-
-### ✅ 3. Get Lead By ID
-
-**GET** `/api/leads/{id}`
-
----
-
-### ✅ 4. Update Lead
-
-**PUT** `/api/leads/{id}`
+* id
+* title
+* description
+* status (ENUM)
+* priority (ENUM)
+* leadId
+* assignedUser
 
 ---
 
-### ✅ 5. Delete Lead
+### Enums
 
-**DELETE** `/api/leads/{id}`
-
----
-
-### ✅ 6. Search by Status
-
-**GET** `/api/leads/status/{status}`
-
-Example:
+#### TicketStatus
 
 ```
-/api/leads/status/NEW
+OPEN, IN_PROGRESS, RESOLVED, CLOSED
+```
+
+#### TicketPriority
+
+```
+LOW, MEDIUM, HIGH
 ```
 
 ---
 
-## 🔄 API Response Format
+### APIs
+
+#### 🎟 Ticket APIs
+
+* POST `/api/tickets`
+* GET `/api/tickets`
+* GET `/api/tickets/{id}`
+* PUT `/api/tickets/{id}`
+* DELETE `/api/tickets/{id}`
+
+#### 🔍 Filtering
+
+* GET `/api/tickets/status/{status}`
+* GET `/api/tickets/priority/{priority}`
+
+#### 👤 User APIs
+
+* POST `/api/users`
+* GET `/api/users`
+
+---
+
+---
+
+## 🚀 Day 5: Audit Logging System
+
+---
+
+### Features
+
+* Track CREATE, UPDATE, DELETE operations
+* Store old vs new data
+* Store timestamp & user
+* Centralized logging
+
+---
+
+### AuditLog Fields
+
+* id
+* action
+* entityName
+* entityId
+* performedBy
+* oldValue
+* newValue
+* timestamp
+
+---
+
+### Example Data
+
+| Action | Old Value | New Value    |
+| ------ | --------- | ------------ |
+| CREATE | null      | new ticket   |
+| UPDATE | old data  | updated data |
+| DELETE | old data  | null         |
+
+---
+
+### SQL Check
+
+```sql
+SELECT * FROM audit_logs;
+```
+
+---
+
+---
+
+## 🚀 Day 6: Advanced Features
+
+---
+
+### 🔥 1. JSON Audit Logging
+
+* Replaced `toString()` with JSON
+* Used Jackson `ObjectMapper`
+
+#### Benefits:
+
+* Structured logs
+* Easy debugging
+* Industry standard
+
+---
+
+### 🔥 2. Pagination & Sorting
+
+#### API:
+
+```
+GET /api/tickets?page=0&size=5&sortBy=id&direction=asc
+```
+
+#### Benefits:
+
+* Performance optimization
+* Handles large datasets
+
+---
+
+### 🔥 3. Custom JPA Query
+
+#### API:
+
+```
+GET /api/tickets/filter?priority=HIGH&status=OPEN
+```
+
+#### Implementation:
+
+* `@Query` annotation
+* Combined filtering
+
+---
+
+# 🔄 API RESPONSE FORMAT
+
+---
+
+## ✅ Success
 
 ```json
 {
   "success": true,
-  "message": "Lead created successfully",
-  "data": {
-    "id": 1,
-    "fullName": "Asif",
-    "email": "asif@gmail.com"
-  }
+  "message": "Operation successful",
+  "data": {}
 }
 ```
 
 ---
 
-## ❌ Error Response Format
+## ❌ Error
 
 ```json
 {
   "timestamp": "2026-04-25T20:00:00",
-  "message": "Lead not found",
+  "message": "Resource not found",
   "status": 404
 }
 ```
 
 ---
 
-## 🔐 Validation
-
-Used annotations:
-
-* `@NotBlank`
-* `@Email`
-* `@Valid`
+# 🧠 KEY CONCEPTS COVERED
 
 ---
 
-## ⚠️ Exception Handling
-
-### Custom Exception:
-
-* `ResourceNotFoundException`
-
-### Global Handler:
-
-* `@RestControllerAdvice`
-
----
-
-## 🔁 DTO & Mapper
-
-### Why DTO?
-
-* Security
-* Decoupling from DB
-* Flexible API responses
-
-### Mapper Role:
-
-* Convert Request DTO → Entity
-* Convert Entity → Response DTO
+* Layered Architecture
+* DTO Pattern
+* Exception Handling
+* JPA & Hibernate
+* Entity Relationships
+* Enum usage
+* Audit Logging
+* Pagination & Sorting
+* Custom Queries
 
 ---
 
-## 🧪 Testing
+# 🧪 TESTING
+
+---
 
 ### Swagger UI
 
-Use browser to test APIs.
+```
+http://localhost:8080/swagger-ui/index.html
+```
 
 ---
 
 ### Test Flow
 
 1. Create Lead
-2. Get All Leads
-3. Get By ID
-4. Update
-5. Search
-6. Delete
+2. Create User
+3. Create Ticket
+4. Assign User
+5. Update Ticket
+6. Delete Ticket
+7. Check Audit Logs
 
 ---
 
-### Negative Testing
-
-* Invalid email
-* Non-existing ID
-* Duplicate email
+# 💬 IMPORTANT INTERVIEW QUESTIONS
 
 ---
 
-## 📊 Database Check
+### Q1. Why DTO?
 
-```sql
-SELECT * FROM leads;
-```
-
----
-
-## 🧠 Key Concepts Covered
-
-* Layered Architecture
-* DTO Pattern
-* Exception Handling
-* Validation
-* JPA Repository
-* Enum usage
-* API Design
-
----
-
-## 💬 Important Interview Points
-
----
-
-### Q1. Why DTO instead of Entity?
-
-DTO provides abstraction and avoids exposing database structure.
+To avoid exposing database structure and for flexible API design.
 
 ---
 
@@ -324,100 +412,97 @@ To separate business logic from controller.
 
 ---
 
-### Q3. Why Global Exception Handler?
+### Q3. Why Audit Logging?
 
-Centralized error handling.
-
----
-
-### Q4. Why Enum for status?
-
-* Avoid typo issues
-* Type safety
-* Controlled values
+To track system changes for debugging and monitoring.
 
 ---
 
-### Q5. Why JpaRepository?
+### Q4. Why Enum?
 
-Provides ready CRUD operations and reduces boilerplate code.
-
----
-
-## 🔁 Alternative Approaches
-
-| Feature      | Alternative             |
-| ------------ | ----------------------- |
-| Mapper       | MapStruct / ModelMapper |
-| DB Migration | Flyway / Liquibase      |
-| Architecture | Clean / Hexagonal       |
-| Query        | @Query / Criteria API   |
+To ensure type safety and avoid invalid values.
 
 ---
 
-## 📝 Git Commits (Day-wise)
+### Q5. Why Pagination?
 
-### Day 1
+To improve performance and handle large datasets.
+
+---
+
+# 🧾 GIT COMMITS SUMMARY
+
+---
+
+### Day 1–3
 
 ```
-Initial project setup with layered architecture, MySQL, and Swagger configuration
-Added Lead entity, DTOs, enums, and initial CRM module structure
+Implemented Lead CRUD with validation and exception handling
+Added DTO, Mapper, and Swagger integration
 ```
 
 ---
 
-### Day 2
+### Day 4
 
 ```
-Added LeadRepository using Spring Data JPA
-Added LeadService interface
-Added LeadMapper
-Implemented LeadServiceImpl
-Added LeadController APIs
+Added Ticket module with relationships and CRUD APIs
+Implemented user assignment and filtering features
 ```
 
 ---
 
-### Day 3
+### Day 5
 
 ```
-Added update lead API
-Added delete lead API
-Added custom ResourceNotFoundException
-Implemented global exception handler
-Added duplicate email validation
-Added search by status API
-Added standardized API response wrapper
+Added Audit Logging system for tracking changes
+Integrated logging in Ticket operations
 ```
 
 ---
 
-## ✅ Milestone Status
+### Day 6
 
-✔ Lead CRUD complete
-✔ Validation complete
-✔ Exception handling complete
-✔ Swagger integrated
-✔ API structure production-ready
-
----
-
-## 🚀 Next Steps (Day 4)
-
-* Ticket Module
-* Audit Logs
-* Entity Relationships (OneToMany)
-* Advanced JPA
+```
+Implemented JSON-based audit logging using ObjectMapper
+Added pagination and sorting support
+Implemented custom JPA queries for filtering
+```
 
 ---
 
-## 👨‍💻 Author
-
-Asif Kalim
-(Java Backend Developer – Spring Boot)
+# ✅ PROJECT STATUS
 
 ---
 
-🔥 **Note:** This project structure is aligned with real-world industry backend systems and is highly useful for interviews.
+✔ Lead Management
+✔ Ticket Management
+✔ User Assignment
+✔ Audit Logging
+✔ JSON Logging
+✔ Pagination & Sorting
+✔ Advanced Queries
+
+---
+
+# 🚀 NEXT STEPS
+
+---
+
+* JWT Authentication
+* Role-based access (Admin/User)
+* Secure APIs
+* Microservices architecture
+
+---
+
+# 👨‍💻 Author
+
+**Asif Kalim**
+Java Backend Developer (Spring Boot)
+
+---
+
+🔥 *This project is designed to match real-world backend systems and is highly valuable for interviews.*
 
 ---

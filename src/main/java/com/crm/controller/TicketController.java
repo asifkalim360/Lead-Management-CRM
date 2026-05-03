@@ -25,7 +25,7 @@ public class TicketController {
         return ResponseEntity.ok(ticketService.createTicket(dto));
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<?> getAllTicket()
     {
         return ResponseEntity.ok(ticketService.getAllTicket());
@@ -59,6 +59,17 @@ public class TicketController {
     public ResponseEntity<?> getByPriority(TicketPriority priority)
     {
         return ResponseEntity.ok(ticketService.getByPriority(priority));
+    }
+
+    @GetMapping("/pagination")
+    public ResponseEntity<?> getAllTicketsPagination(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction
+    )
+    {
+        return ResponseEntity.ok(ticketService.getAllTicketsPagination(page, size, sortBy, direction));
     }
 
 }

@@ -6,7 +6,7 @@ public interface AuditService {
              String entityName,
              Long entityId,
              String performedBy,
-             String oldValue,
-             String newValue);
+             Object oldObj,
+             Object newObj);
 
 }
