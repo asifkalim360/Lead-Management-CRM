@@ -2,6 +2,7 @@ package com.crm.service;
 
 import com.crm.dto.TicketRequestDTO;
 import com.crm.dto.TicketResponseDTO;
+import com.crm.entity.Ticket;
 import com.crm.enums.TicketPriority;
 import com.crm.enums.TicketStatus;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,8 @@ public interface TicketService {
     public List<TicketResponseDTO> getByStatus(TicketStatus status);
 
     public List<TicketResponseDTO> getByPriority(TicketPriority priority);
+
+    public List<TicketResponseDTO> findByPriorityAndStatus(TicketPriority priority, TicketStatus status);
 
 }
 

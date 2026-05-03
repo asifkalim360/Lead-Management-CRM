@@ -50,7 +50,7 @@ public class TicketController {
     }
 
     @GetMapping("/status/{status}")
-    public ResponseEntity<?> getByStatus(TicketStatus status)
+    public ResponseEntity<?> status(TicketStatus status)
     {
         return ResponseEntity.ok(ticketService.getByStatus(status));
     }
@@ -62,7 +62,7 @@ public class TicketController {
     }
 
     @GetMapping("/pagination")
-    public ResponseEntity<?> getAllTicketsPagination(
+    public ResponseEntity<?> Pagination(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "id") String sortBy,
@@ -70,6 +70,14 @@ public class TicketController {
     )
     {
         return ResponseEntity.ok(ticketService.getAllTicketsPagination(page, size, sortBy, direction));
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<?> filterTicket(
+            @RequestParam TicketPriority priority,
+            @RequestParam TicketStatus status)
+    {
+        return ResponseEntity.ok(ticketService.findByPriorityAndStatus(priority, status));
     }
 
 }

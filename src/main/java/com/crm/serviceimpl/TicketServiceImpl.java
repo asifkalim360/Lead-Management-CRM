@@ -216,4 +216,14 @@ public class TicketServiceImpl implements TicketService {   // Ye class TicketSe
         Page<Ticket> ticketPage = ticketRepository.findAll(pageable);
         return ticketPage.map(mapper::toDto);
     }
+
+    @Override
+    public List<TicketResponseDTO> findByPriorityAndStatus(TicketPriority priority, TicketStatus status) {
+        return ticketRepository.findByPriorityAndStatus(priority, status)
+                .stream()
+                .map(mapper::toDto)
+                .toList();
+    }
+
+
 }
