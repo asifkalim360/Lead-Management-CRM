@@ -14,14 +14,12 @@ import com.crm.repository.TicketRepository;
 import com.crm.repository.UserRepository;
 import com.crm.service.AuditService;
 import com.crm.service.TicketService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
